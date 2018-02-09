@@ -2,7 +2,7 @@
 Python/batch re-attaches video files that use segment linking or "ordered chapters"
 
 ### Dependencies:
-* [MkvToolsnix(mkvExtract & mkvMerge)](https://mkvtoolnix.download/)
+* [MkvToolnix(mkvExtract & mkvMerge)](https://mkvtoolnix.download/)
 * [Python3.6](https://www.python.org/downloads/) bs4, json, sys
 
 ### Getting started:
