@@ -72,7 +72,7 @@ def ReviseXML(TC):
     
 
 def parseChapters():
-    with open('tempChapters.xml', mode='r', encoding='utf-8') as chaps, open('pyReturn.bat', mode='w', encoding='utf-8') as pyReturn:
+    with open('tempChapters.xml', mode='r', encoding='utf-8') as chaps, open('pyReturn.txt', mode='w', encoding='utf-8') as pyReturn:
         soup = BeautifulSoup(chaps, 'html.parser')
         timecode = '00:00:00.000000000'
         newXMLTCO = '00:00:00.000000000'
@@ -103,6 +103,8 @@ def parseChapters():
                 newXMLTCDic['chapter' + str(chapNum)] = addHMS(newXMLTC.split(':'),str(chapter.find('chaptertimeend').text).split(':'))
                 chapterFile = findBySuid(chapter.find('chaptersegmentuid').text)
                 timeCodes +=str(timecode) + ','
+                #~TODO find out if outside chaps are relevent? or if i can comment out?
+                #~requires running to find out
                 pyReturn.write('set outsideChap' + str(outSideChaps) + '=' + str(chapterFile) + '\n')
                 if not partTrigger == 'out':
                     parts += '"%inputPath%\\' + str(chapterFile) + '" +'
