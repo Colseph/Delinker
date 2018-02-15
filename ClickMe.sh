@@ -22,30 +22,31 @@ getFileList() { #~gets file list in array
 	IFS=$'\n'
 	fileArray=($fileList)
 	IFS=$IFSOLD
+	echo "${fileArray[@]}"
+	echo -----
 }
 
 makeJson() { #~extracts info from files in json format
 	#~creates json index file for python
 	echo "Creating Json Files"
 	for mkvFile in "${fileArray[@]}"; do
-		echo $mkvMerge --identification-format json --identify "$mkvFile" > "./$(basename $mkvFile).json"
-		echo "$(basename $mkvFile).json" >> "./jsonIndex.txt"
+		echo $mkvMerge --identification-format json --identify "$mkvFile" > "./$(basename "$mkvFile").json"
+		echo "$(basename "$mkvFile").json" >> "./jsonIndex.txt"
 	done
-	getInfo
 }
 
 getInfo() { #~gets information form Delinker.py
 	for mkvFile in "${fileArray[@]}"; do
-		echo "Extracting Chapters for $(basename $mkvFile)"
+		echo "Extracting Chapters for '$(basename "$mkvFile")'"
 		#~sends file info/chapters to xml for python to parse
 		echo $mkvExtract chapters $mkvFile > "./tempChapters.xml"
-		#~gets runs Python and gets vars
+		#~runs Python and gets vars
 		echo ./Delinker.py
 		#~gets vars from python(reads text file into array)
 		#~for reference the order of the array is:
 		#~a bunch of outsideChap# vars not sure if relevent yet
 		#~partNum timeCodes
-		pythonVars=('cat ./pyReturn.txt')
+		echo 'pythonVars=('cat ./pyReturn.txt')'
 		remux
 	done
 }
@@ -65,9 +66,7 @@ remux() { #~Remuxes mkv file
 #~---------------
 
 cat<<EOF
-As of now this script cannot handle spaces or wildcards '*'
-in foldernames or file names so if you get random errors, check your names
-Also - leave the end '/' off of your path
+Remember - leave the end '/' off of your path
 example: /etc/files/Videos/randomShow
 EOF
 read -p "Enter FULL Path to Files(no '~/' or '\$HOME'): " inputPath
@@ -80,5 +79,6 @@ getInfo
 #~cleans up the mess.
 rm -rf *.json
 rm -rf *.txt
-read -s -N 1 -p "Done!\nPress Any Key To Continue..." tempVar
+echo Done!
+read -s -N 1 -p "Press Any Key To Continue..." tempVar
 
